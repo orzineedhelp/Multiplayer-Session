@@ -8,6 +8,14 @@
 
 #include "MultiplayerSessionsSubsystem.generated.h"
 
+
+//声明自创的给菜单的委托
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMultiPlayerOnCreateSessionComplete, bool, bWasSuccessful);//动态多播委托
+DECLARE_MULTICAST_DELEGATE_TwoParams(FMultiplayerOnFindSessionsComplete, const TArray<FOnlineSessionSearchResult>& SessionResults, bool bWasSuccessful);//多播委托
+DECLARE_MULTICAST_DELEGATE_OneParam(FMultiplayerOnJoinSessionComplete, EOnJoinSessionCompleteResult::Type Reuslt);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMultiplayerOnDestorySessionComplete, bool, bWasSuccessful);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMultiplayerOnStartSessionComplete, bool, bWasSuccessful);
+
 /**
  * 
  */
@@ -22,8 +30,17 @@ public:
 	void CreateSession(int32 NumPublicConnections, FString MatchType);
 	void FindSessions(int32 MaxSearchResults);
 	void JoinSession(const FOnlineSessionSearchResult& SessionResult);
-	void DestorySession();
+	void DestroySession();
 	void StartSession();
+
+
+	//自创委托
+	FMultiPlayerOnCreateSessionComplete MultiPlayerOnCreateSessionComplete;
+	FMultiplayerOnFindSessionsComplete MultiplayerOnFindSessionsComplete;
+	FMultiplayerOnJoinSessionComplete MultiplayerOnJoinSessionComplete;
+	FMultiplayerOnDestorySessionComplete MultiplayerOnDestroySessionComplete;
+	FMultiplayerOnStartSessionComplete MultiplayerOnStartSessionComplete;
+
 
 protected:
 	//相关回调函数
@@ -35,6 +52,9 @@ protected:
 
 private:
 	IOnlineSessionPtr SessionInterface;
+	TSharedPtr<FOnlineSessionSettings> LastSessionSettings;
+	TSharedPtr<FOnlineSessionSearch> LastSessionSearch;
+
 
 	//相关委托以及委托处理
 	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
@@ -47,8 +67,12 @@ private:
 	FDelegateHandle JoinSessionCompleteDelegateHandle;
 
 	FOnDestroySessionCompleteDelegate DestroySessionCompleteDelegate;
-	FDelegateHandle DestroySessionCompleteDelegateDelegateHandle;
+	FDelegateHandle DestroySessionCompleteDelegateHandle;
 
 	FOnStartSessionCompleteDelegate StartSessionCompleteDelegate;
 	FDelegateHandle StartSessionCompleteDelegateHandle;
+
+	bool bCreateSessionOnDestory{ false };
+	int32 LastNumPublicConnections;
+	FString LastMatchType;
 };

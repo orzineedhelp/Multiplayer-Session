@@ -92,14 +92,14 @@ public:
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	UFUNCTION(BlueprintCallable)
+	/*UFUNCTION(BlueprintCallable)
 	void OpenLobby();
 
 	UFUNCTION(BlueprintCallable)
 	void CallOpenLevel(const FString& Address);
 
 	UFUNCTION(BlueprintCallable)
-	void CallClientTravel(const FString& Address);
+	void CallClientTravel(const FString& Address);*/
 
 
 public:
@@ -109,20 +109,20 @@ public:
 
 
 protected:
-	UFUNCTION(BlueprintCallable)
-	void CreateGameSession();
+	//UFUNCTION(BlueprintCallable)
+	//void CreateGameSession();
 
-	UFUNCTION(BlueprintCallable)
-	void JoinGameSession();
+	//UFUNCTION(BlueprintCallable)
+	//void JoinGameSession();
 
-	//回调函数
-	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
-	void OnFindSessionsComplete(bool bWasSuccessful);//只需反应是否查找成功
+	////回调函数
+	//void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	//void OnFindSessionsComplete(bool bWasSuccessful);//只需反应是否查找成功
 
 private:
 
-	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
-	FOnFindSessionsCompleteDelegate FindSessionsCompleteDelegate;
+	/*FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	FOnFindSessionsCompleteDelegate FindSessionsCompleteDelegate;*/
 	TSharedPtr<FOnlineSessionSearch> SessionSerch;
 };
 
